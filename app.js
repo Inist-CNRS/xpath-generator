@@ -5,10 +5,14 @@ const _ = require('lodash');
 const parser = new expat.Parser('UTF-8');
 const fs = require('fs');
 
-const data = fs.readFileSync('nature-file-test.xml', 'utf8');
+const data = fs.readFileSync('test-big.xml', 'utf8');
 
 const arrData = [];
 const mapResults = [];
+
+const  xpaths = fs.createWriteStream('xpaths.txt');
+
+console.log(parser)
 
 parser.on('startElement', function (name, attrs) {
   const attributes = [];
@@ -23,7 +27,8 @@ parser.on('startElement', function (name, attrs) {
 
   arrData.push(name);
   const xpath = arrData.join('/') + attributeXpath;
-  console.log(xpath);
+  //console.log(xpath);
+  xpaths.write(xpath);
 
   const getResult = _.find(mapResults, {'xpath': xpath});
   const haveResult = _.isObject(getResult);

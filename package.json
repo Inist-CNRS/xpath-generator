@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "cheerio": "^0.22.0",
     "lodash": "^4.16.4",
     "node-expat": "^2.3.15"
   },
