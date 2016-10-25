@@ -37,3 +37,6 @@ node_modules
 
 # Ignore OSX's files
 .DS_Store
+
+output-tree.xml
+output-xpaths.xml

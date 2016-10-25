@@ -12,11 +12,10 @@ const tree = fs.createWriteStream('tree.txt'),
 
 function scrawl(element = $.root().children(), level = 0, parents = '') {
   parents = `${parents}/${element[0].name}`;
-  console.log($(element).attr());
   //tree.write(`${'│  '.repeat(level)}├── ${element[0].name}\n`);
   //xpaths.write(`${parents}\n`)
   console.log(`${'│  '.repeat(level)}├── ${element[0].name}`);
-  console.log(`${parents}[${element.attr()}]`);
+  //console.log(`${parents}`);
   if(element.children().length){
     element.children().each((i,elem) => {
       scrawl($(elem), level+1, parents);
