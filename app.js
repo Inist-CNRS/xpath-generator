@@ -1,56 +1,46 @@
-"use strict";
+const program = require('commander'),
+      version = require('./package.json').version,
+      FromXml = require('./lib/FromXml'),
+      FromFolder = require('./lib/FromFolder');
 
-const expat = require('node-expat');
-const _ = require('lodash');
-const parser = new expat.Parser('UTF-8');
-const fs = require('fs');
+// Cli config
+program
+.version(version)
+.usage('[options] <file ...>')
+.option('-i, --input <path>', 'An xml input file')
+.option('-f, --folder <path>', 'A folder containing xml files')
+.parse(process.argv);
 
-const data = fs.readFileSync('test-big.xml', 'utf8');
+// No option provided , show help
+if (!process.argv.slice(2).length) {
+  program.outputHelp();
+}
 
-const arrData = [];
-const mapResults = [];
+//Start cli on folder
+if(program.folder){
+  console.log(program.folder);
+  return;
+}
 
-const  xpaths = fs.createWriteStream('xpaths.txt');
+// Start Cli on File
+if(program.input){
+  console.log(program.input);
+  return;
+}
 
-console.log(parser)
 
-parser.on('startElement', function (name, attrs) {
-  const attributes = [];
-  let attributeXpath = '';
-  const keys = Object.keys(attrs);
-  if (keys.length > 0) {
-    for (let i = 0; i < keys.length; i++) {
-      attributes.push('@' + keys[i] + "='" + attrs[keys[i]] + "'")
-    }
-    attributeXpath = '[' + attributes.join(' and ') + ']';
+/*const FromXml = require('./lib/FromXml');
+let xml = new FromXml().generate().then(results=>{
+  for (var path in results){
+    console.log(`${path} ${results[path].count}`)
   }
+});*/
 
-  arrData.push(name);
-  const xpath = arrData.join('/') + attributeXpath;
-  //console.log(xpath);
-  xpaths.write(xpath);
-
-  const getResult = _.find(mapResults, {'xpath': xpath});
-  const haveResult = _.isObject(getResult);
-  if (haveResult) {
-    getResult.count++
-  } else {
-    mapResults.push({
-      xpath: xpath,
-      count: 1
-    });
+/*const FromFolder = require('./lib/FromFolder');
+let xml = new FromFolder().generateAll().then((results)=>{
+  for (var path in results) {
+    console.log(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count}`);
+    //console.log(`${path} ${results[path].count} ${results[path].level}` )
   }
+});*/
 
-  // console.log(mapResults);
-});
-
-parser.on('endElement', function () {
-  arrData.pop();
-});
-
-parser.on('error', function (error) {
-  console.error(error)
-});
-
-parser.write(data);
-// parser.write('<html><head><title>Hello World</title></head><body><p>Foobar</p></body></html>')
