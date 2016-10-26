@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "description": "",
   "main": "app.js",
+  "bin": {
+    "xpathgenerator": "index.js"
+  },
   "dependencies": {
     "bluebird": "^3.4.6",
     "cheerio": "^0.22.0",
     "commander": "^2.9.0",
-    "kuler": "0.0.0",
-    "lodash": "^4.16.4",
-    "node-expat": "^2.3.15"
+    "kuler": "0.0.0"
   },
   "devDependencies": {},
   "scripts": {

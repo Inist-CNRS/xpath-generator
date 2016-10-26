@@ -26,7 +26,7 @@ var results;
 
 // Start Cli on File
 if(program.input){
-  let xml = new FromXml().generate().then(result=> {
+  let xml = new FromXml().generate(program.input).then(result=> {
     results = result;
     var action = actionsToDo();
     for (var key in result) {
@@ -36,7 +36,7 @@ if(program.input){
 }
 // Start Cli on Folder
 if(program.folder){
-  let xml = new FromFolder().generateAll().then(result=> {
+  let xmls = new FromFolder().generateAll(program.folder).then(result=> {
     results = result;
     var action = actionsToDo();
     for (var key in result) {
@@ -47,7 +47,7 @@ if(program.folder){
 
 function actionsToDo() {
 
-  if (!program.output === 'console') {
+  if (program.output === 'console') {
     if (program.type === 'xpaths') {
       return function (path) {console.log(`${path} ${results[path].count}`)};
     }
@@ -57,6 +57,10 @@ function actionsToDo() {
   // Write file , no output
   else {
     var xpathsFile, treeFile;
+    if(!program.output){
+      console.error('error no output specified');
+      process.exit(0)
+    }
     if (program.type === 'xpaths') {
       xpathsFile = writeStream('xpaths', program.output);
       return function (path) {xpathsFile.write(`${path} ${results[path].count}\n`)}
@@ -82,17 +86,3 @@ function writeStream(type,output) {
   });
   return stream;
 }
-
-
-/*const FromXml = require('./lib/FromXml');
-
-});*/
-
-/*const FromFolder = require('./lib/FromFolder');
-let xml = new FromFolder().generateAll().then((results)=>{
-  for (var path in results) {
-    console.log(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count}`);
-    //console.log(`${path} ${results[path].count} ${results[path].level}` )
-  }
-});*/
-
