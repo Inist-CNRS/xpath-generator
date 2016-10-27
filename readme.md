@@ -4,24 +4,24 @@ Xpath-Generator
 Node script (Api & ClI) that can generate a tree or xpaths, group & count them.
 
 ##CLI :
-`npm i -g xpath-generator`
 
-Then -> `xpath-generator -f /folder/ -o /output`
+    npm i -g xpath-generator`
+
+Then -> 
+
+    xpath-generator -f /folder/ -o /output`
 
 ##Install :
-`npm i -save xpath-generator`
+
+    npm i -save xpath-generator`
 
 Load it:
-
-`
 
     const FromXML = require('xpath-generator').FromXML,
           FromFolder = require('xpath-generator').FromFolder;
         
-`
 
 Use it :
-`
 
     let xml = new FromXml().generate(Path to XML).then(result=> {
          for (var key in result) {
@@ -34,11 +34,9 @@ Use it :
         }
     });
     
-`
 
 result will return something like 
 
-`
     [
         {
             '/path/number/1' : {
@@ -53,7 +51,6 @@ result will return something like
             }
        }
     ]
-`
 
 
 ### options
