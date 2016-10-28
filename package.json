@@ -2,9 +2,9 @@
   "name": "xpath-generator",
   "version": "0.0.2",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "bin": {
-    "xpathgenerator": "index.js"
+    "xpathgenerator": "app.js"
   },
   "dependencies": {
     "bluebird": "^3.4.6",
