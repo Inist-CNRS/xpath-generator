@@ -69,7 +69,20 @@ describe('Test on an simple xml', () => {
       //Reset xmlcount for next test
       xml._count= {};
     });
-  });
+  })
+  it('Should not clear count if option is set to false', ()=>{
+    return xml.generate('./samples/test.xml',false).then(result=> {
+      expect(xml._count).to.be.an('object');
+      expect(xml._count).to.not.be.empty;
+    });
+  })
+  it('Should clear count if option is set to true', ()=>{
+    return xml.generate('./samples/test.xml',true).then(result=> {
+      expect(xml._count).to.be.an('object');
+      expect(xml._count).to.be.empty;
+    });
+  })
+  //Attention here comparing value, make sure test cleaning to true was done just before
   it('Should Generate an obj from xml file from generate method', ()=>{
     return xml.generate('./samples/test.xml',true).then(result=> {
       let firstKeyToCompare  = Object.keys(result)[0],
@@ -78,4 +91,5 @@ describe('Test on an simple xml', () => {
       expect(firstValueToCompare).to.deep.equal(firstValueToCheck);
     });
   })
+  
 })
