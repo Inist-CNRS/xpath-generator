@@ -55,10 +55,12 @@ function actionsToDo() {
     }
     //tree
     return function (path) {
-      console.log(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count}`)
+      let elements = path.split('/'),
+          elementName = elements[elements.length-1];
+      console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].count}`)
     };
   }
-  // Write file , no output
+  // Write file, no output
   else {
     var xpathsFile, treeFile;
     if (!program.output) {
