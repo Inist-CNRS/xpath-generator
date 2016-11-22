@@ -9,6 +9,7 @@ const program = require('commander'),
 program
   .version(version)
   .usage('[options] <file ...>')
+  .option('-a, --attributes', 'Willr eturn all attributes & uniques values for all paths')
   .option('-i, --input <path>', 'An xml input file')
   .option('-f, --folder <path>', 'A folder containing xml files')
   .option('-o, --output <path>', 'Generate files to specific path, default is console')
@@ -32,7 +33,9 @@ if (program.input) {
     for (var key in result) {
       action(key);
     }
-  });
+  }).catch(err=>{
+    console.error('An error came : ', err);
+  })
 }
 // Start Cli on Folder
 if (program.folder) {
@@ -50,14 +53,14 @@ function actionsToDo() {
   if (program.output === 'console') {
     if (program.type === 'xpaths') {
       return function (path) {
-        console.log(`${path} ${results[path].count}`)
+        console.log(`${path} ${results[path].count} ${program.attributes ? JSON.stringify(results[path].attributes) : ''}`)
       };
     }
     //tree
     return function (path) {
       let elements = path.split('/'),
           elementName = elements[elements.length-1];
-      console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].count}`)
+      console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].count} ${program.attributes ? JSON.stringify(results[path].attributes) : ''}`)
     };
   }
   // Write file, no output
@@ -70,13 +73,13 @@ function actionsToDo() {
     if (program.type === 'xpaths') {
       xpathsFile = writeStream('xpaths', program.output);
       return function (path) {
-        xpathsFile.write(`${path} ${results[path].count}\n`)
+        xpathsFile.write(`${path} ${results[path].count} ${program.attributes ? JSON.stringify(results[path].attributes) : ''}\n`)
       }
     }
     if (program.type === 'tree') {
       treeFile = writeStream('tree', program.output);
       return function (path) {
-        treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count}\n`);
+        treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count} ${program.attributes ? JSON.stringify(results[path].attributes) : ''}\n`);
       }
     }
     //both
