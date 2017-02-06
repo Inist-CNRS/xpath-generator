@@ -1,6 +1,8 @@
 Xpath-Generator
 =====
 
+[![Build Status](https://travis-ci.org/Inist-CNRS/xpath-generator.svg?branch=master)](https://travis-ci.org/Inist-CNRS/xpath-generator)
+
 Node script (API & CLI) that can generate a list of xpaths for XML files, group & count them, list attributes & values.
 
 Tree :
