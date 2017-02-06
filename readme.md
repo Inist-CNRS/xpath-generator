@@ -3,6 +3,12 @@ Xpath-Generator
 
 Node script (API & CLI) that can generate a tree or xpaths, group & count them.
 
+Tree :
+![Xpath-Tree](https://raw.githubusercontent.com/inist-CNRS/xpath-generator/master/xpath-tree-console.png)
+
+List:
+![Xpath-List](https://raw.githubusercontent.com/inist-CNRS/xpath-generator/master/xpath-xpaths.png)
+
 ##CLI :
 ```sh
 npm i -g xpath-generator
@@ -13,7 +19,22 @@ Then :
 xpath-generator -f /folder/ -o /output
 ```
 
-##Install :
+### Help
+```sh
+xpath-generator --help
+```
+
+### Options
+  -h, --help                     output usage information
+  -V, --version                  output the version number
+  -a, --attributes               Will return all attributes & uniques values for all paths
+  -i, --input <path>             An xml input file
+  -f, --folder <path>            A folder containing xml files
+  -o, --output <path>            Generate files to specific path, default output is terminal
+  -t, --type <tree/xpaths/both>  Type of format output, can be 'tree' 'xpaths' or 'both' for outputdir, 'tree' 'xpaths' for console
+
+
+##Use it as service :
 ```sh
 npm i -save xpath-generator
 ```
@@ -39,36 +60,31 @@ let xmls = new FromFolder().generateAll(program.folder).then(result=> {
 });
 ```   
 
-Result will return something like 
+Result will return an array of object like: 
 
 ```js
-[{
-  '/path/number/1' : {
-    count : n,
-    level : n
+[
+  {
+    '/path/number/1' : {
+      count : n,
+      level : n,
+      attributes: {
+        attr1: ['a','list','of','distinct','values','for','attr1'],
+        attr2,
+        ...
+      }
+    }
+  },
+  {
+    '/path/number/2' : {
+      count : n,
+      level : n,
+      attributes: {
+        attr1: ['a','list','of','distinct','values','for','attr1'],
+        attr2,
+        ...
+      }
+    }
   }
-},{
-  '/path/number/2' : {
-    count : n,
-    level : n
-  }
-}]
+]
 ```
-
-
-### Options
-
-#### File : 
-
-#### Folder :
-Output option can be : 
-
-- console
-- a path, ex './' without xml name 
-
-Type option can be :
-
-- xpaths
-- tree
-- both, only work with path output, not console
-

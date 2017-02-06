@@ -9,7 +9,7 @@ const program = require('commander'),
 program
   .version(version)
   .usage('[options] <file ...>')
-  .option('-a, --attributes', 'Willr eturn all attributes & uniques values for all paths')
+  .option('-a, --attributes', 'Will return all attributes & uniques values for all paths')
   .option('-i, --input <path>', 'An xml input file')
   .option('-f, --folder <path>', 'A folder containing xml files')
   .option('-o, --output <path>', 'Generate files to specific path, default is console')
@@ -20,7 +20,6 @@ program
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
-
 
 //Make results available globally
 var results;
@@ -68,23 +67,29 @@ function actionsToDo() {
     var xpathsFile, treeFile;
     if (!program.output) {
       console.error('error no output specified');
-      process.exit(0)
+      process.exit(0);
     }
     if (program.type === 'xpaths') {
-      xpathsFile = writeStream('xpaths', program.output);
+      xpathsFile = writeStream('xpaths', program.output, 'csv');
       return function (path) {
-        xpathsFile.write(`${path} ${results[path].count} ${program.attributes ? JSON.stringify(results[path].attributes) : ''}\n`)
+        xpathsFile.write(`${path};${results[path].count}`)
+        if(program.attributes){
+          for(var attr in results[path].attributes){
+            xpathsFile.write(`;"${attr} => ${results[path].attributes[attr].join('\n')}"`)
+          }
+        }
+        xpathsFile.write('\n');
       }
     }
     if (program.type === 'tree') {
-      treeFile = writeStream('tree', program.output);
+      treeFile = writeStream('tree', program.output,'txt');
       return function (path) {
         treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count} ${program.attributes ? JSON.stringify(results[path].attributes) : ''}\n`);
       }
     }
     //both
-    xpathsFile = writeStream('xpaths', program.output);
-    treeFile = writeStream('tree', program.output);
+    xpathsFile = writeStream('xpaths', program.output,'csv');
+    treeFile = writeStream('tree', program.output,'txt');
     return function (path) {
       xpathsFile.write(`${path} ${results[path].count}\n`)
       treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count}\n`);
@@ -92,8 +97,8 @@ function actionsToDo() {
   }
 }
 
-function writeStream(type, output) {
-  let stream = fs.createWriteStream(path.resolve(output, `output-${type}.xml`), {'flags': 'w'});
+function writeStream(type, output, extension) {
+  let stream = fs.createWriteStream(path.resolve(output, `output-${type}.${extension}`), {'flags': 'w'});
   stream.on('error', (err)=> {
     throw new Error(err);
   });
