@@ -1,7 +1,7 @@
 Xpath-Generator
 =====
 
-Node script (API & CLI) that can generate a tree or xpaths, group & count them.
+Node script (API & CLI) that can generate a list of xpaths for XML files, group & count them, list attributes & values.
 
 Tree :
 ![Xpath-Tree](https://raw.githubusercontent.com/inist-CNRS/xpath-generator/master/xpath-tree-console.png)
@@ -88,3 +88,6 @@ Result will return an array of object like:
   }
 ]
 ```
+
+#### Info
+There is a limit of maximum 10 values for each attributes.

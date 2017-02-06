@@ -12,6 +12,7 @@ program
   .option('-a, --attributes', 'Will return all attributes & uniques values for all paths')
   .option('-i, --input <path>', 'An xml input file')
   .option('-f, --folder <path>', 'A folder containing xml files')
+  .option('-e, --extension <ext1 ext2 ext3 ...>', 'A list of entension for folder files to be read, .xml is default')
   .option('-o, --output <path>', 'Generate files to specific path, default is console')
   .option('-t, --type <tree/xpaths/both>', 'Type of format output, can be tree/xpaths or both for outputdir, tree/xpaths for console')
   .parse(process.argv);
@@ -38,7 +39,7 @@ if (program.input) {
 }
 // Start Cli on Folder
 if (program.folder) {
-  let xmls = new FromFolder().generateAll(program.folder).then(result=> {
+  let xmls = new FromFolder().generateAll(program.folder,program.extension).then(result=> {
     results = result;
     var action = actionsToDo();
     for (var key in result) {
