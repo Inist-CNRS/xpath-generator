@@ -21,6 +21,11 @@ Then :
 xpath-generator -f /folder/ -o /output
 ```
 
+### Folder information
+
+If you want to lauch xpath-generator on a folder, pelas emake sur all your XML are at the top level of our folder, xpath-genrator will not go through subfolder to find them.
+If your main folder contains nasted subfolder wich contains your xml (ex: /main/sub:Sub2.ex.xml) please consider using [Sisyphe](https://github.com/istex/sisyphe)
+
 ### Help
 ```sh
 xpath-generator --help
