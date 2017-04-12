@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const program = require('commander'),
   version = require('./package.json').version,
   FromXml = require('./lib/FromXml'),
