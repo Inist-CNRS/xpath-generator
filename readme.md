@@ -5,13 +5,13 @@ Xpath-Generator
 
 Node script (API & CLI) that can generate a list of xpaths for XML files, group & count them, list attributes & values.
 
-Tree :
+##### Tree view :
 ![Xpath-Tree](https://raw.githubusercontent.com/inist-CNRS/xpath-generator/master/xpath-tree-console.png)
 
-List:
+##### List view:
 ![Xpath-List](https://raw.githubusercontent.com/inist-CNRS/xpath-generator/master/xpath-xpaths.png)
 
-##CLI :
+## CLI :
 ```sh
 npm i -g xpath-generator
 ```
@@ -23,8 +23,10 @@ xpath-generator -f /folder/ -o /output
 
 ### Folder information
 
-If you want to lauch xpath-generator on a folder, pelas emake sur all your XML are at the top level of our folder, xpath-genrator will not go through subfolder to find them.
-If your main folder contains nasted subfolder wich contains your xml (ex: /main/sub:Sub2.ex.xml) please consider using [Sisyphe](https://github.com/istex/sisyphe)
+If you want to lauch xpath-generator on a folder, please make sur all your XML are at the top level of our folder, xpath-generator will not go through subfolder to find them.
+
+If your main folder contains nasted subfolders wich contains your xml (ex: /main/sub/ex.xml) please consider using 
+[Sisyphe](https://github.com/istex/sisyphe)
 
 ### Help
 ```sh
@@ -32,16 +34,24 @@ xpath-generator --help
 ```
 
 ### Options
-  -h, --help                     output usage information
-  -V, --version                  output the version number
-  -a, --attributes               Will return all attributes & uniques values for all paths
-  -i, --input <path>             An xml input file
-  -f, --folder <path>            A folder containing xml files
-  -o, --output <path>            Generate files to specific path, default output is terminal
+
+  -h, --help                     //output usage information
+  
+  -V, --version                  //output the version number
+  
+  -a, --attributes               //Will return all attributes & uniques values for all paths
+  
+  -i, --input <path>             //An xml input file
+  
+  -f, --folder <path>            //A folder containing xml files
+  
+  -o, --output <path>            //Generate files to specific path, default output is terminal
+  
   -t, --type <tree/xpaths/both>  Type of format output, can be 'tree' 'xpaths' or 'both' for outputdir, 'tree' 'xpaths' for console
 
 
-##Use it as service :
+## Use xpath-generator as API :
+
 ```sh
 npm i -save xpath-generator
 ```
