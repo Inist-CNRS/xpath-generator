@@ -67,12 +67,12 @@ Use it :
 ```js
 let xml = new FromXml().generate('path/to/XML').then(result=> {
   for (var key in result) {
-    console.log(`${path} ${result[path].count}`);
+    console.log(`${path} ${result[path].countElement}`);
   }
 });
 let xmls = new FromFolder().generateAll(program.folder).then(result=> {
   for (var key in result) {
-    console.log(`${path} ${result[path].count}`);
+    console.log(`${path} ${result[path].countElement}`);
   }
 });
 ```   
@@ -83,7 +83,7 @@ Result will return an array of object like:
 [
   {
     '/path/number/1' : {
-      count : n,
+      countElement : n,
       level : n,
       attributes: {
         attr1: ['a','list','of','distinct','values','for','attr1'],
@@ -94,7 +94,7 @@ Result will return an array of object like:
   },
   {
     '/path/number/2' : {
-      count : n,
+      countElement : n,
       level : n,
       attributes: {
         attr1: ['a','list','of','distinct','values','for','attr1'],

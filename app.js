@@ -37,7 +37,7 @@ if (program.input) {
     }
   }).catch(err=>{
     console.error('An error came : ', err);
-  })
+  });
 }
 // Start Cli on Folder
 if (program.folder) {
