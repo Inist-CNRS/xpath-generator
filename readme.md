@@ -39,7 +39,7 @@ xpath-generator --help
   
   -V, --version                  //output the version number
   
-  -a, --attributes               //Will return all attributes & uniques values for all paths
+  -a, --attributes               //Will return all attributes & 10 first uniques values for all paths
   
   -i, --input <"path">             //An xml input file
   
