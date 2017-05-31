@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+'use strict';
 const program = require('commander'),
   version = require('./package.json').version,
   FromXml = require('./lib/FromXml'),
@@ -56,7 +56,7 @@ function actionsToDo() {
     if (program.type === 'xpaths') {
       return function (path) {
         let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-        console.log(`${path} ${results[path].count} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`)
+        console.log(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`)
       };
     }
     //tree
@@ -64,7 +64,7 @@ function actionsToDo() {
       let elements = path.split('/'),
           elementName = elements[elements.length-1];
       let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-      console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].count} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`)
+      console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`)
     };
   }
   // Write file, no output
@@ -78,14 +78,14 @@ function actionsToDo() {
       xpathsFile = writeStream('xpaths', program.output, 'csv');
       return function (path) {
         let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-        xpathsFile.write(`${path} ${results[path].count} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`)
+        xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`)
       }
     }
     if (program.type === 'tree') {
       treeFile = writeStream('tree', program.output,'txt');
       return function (path) {
         let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-        treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
+        treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
       }
     }
     //both
@@ -93,8 +93,8 @@ function actionsToDo() {
     treeFile = writeStream('tree', program.output,'txt');
     return function (path) {
       let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-      xpathsFile.write(`${path} ${results[path].count} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`)
-      treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].count} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
+      xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`)
+      treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
     }
   }
 
