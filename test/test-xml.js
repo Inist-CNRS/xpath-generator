@@ -91,5 +91,19 @@ describe('Test on an simple xml', () => {
       expect(firstValueToCompare).to.deep.equal(firstValueToCheck);
     });
   })
+
+  it('Should count more than 10 attribute values, when asked', () => {
+    return xml.generate('./samples/test4.xml', true, 20).then(result => {
+      expect(result['/doc/pub'].countElement).to.equal(12);
+      expect(result['/doc/pub'].attributes.vol.length).to.equal(12);
+    });
+  })
+
+  it('Should count no more than 10 attribute values, by default', () => {
+    return xml.generate('./samples/test4.xml', true).then(result => {
+      expect(result['/doc/pub'].countElement).to.equal(12);
+      expect(result['/doc/pub'].attributes.vol.length).to.equal(10);
+    });
+  })
   
 })
