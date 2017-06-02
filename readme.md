@@ -49,6 +49,8 @@ xpath-generator --help
   
   -t, --type <"tree"/"xpaths"/"both">  Type of format output, can be 'tree' 'xpaths' or 'both' for outputdir, 'tree' 'xpaths' for console
 
+  -n, --nbattvalues <n>            // Number of attribute values to output (see -a), default value: 10
+
 
 ## Use xpath-generator as API :
 
@@ -60,7 +62,7 @@ Load it :
 
 ```js
 const FromXML = require('xpath-generator').FromXML,
-      FromFolder = require('xpath-generator').FromFolder;     
+      FromFolder = require('xpath-generator').FromFolder;
 ```
 
 Use it :
@@ -75,7 +77,7 @@ let xmls = new FromFolder().generateAll(program.folder).then(result=> {
     console.log(`${path} ${result[path].countElement}`);
   }
 });
-```   
+```
 
 Result will return an array of object like: 
 
@@ -107,4 +109,6 @@ Result will return an array of object like:
 ```
 
 #### Info
-There is a limit of maximum 10 values for each attributes.
+There is a default limit of maximum 10 values for each attributes.
+Change it using `--nbattvalues` (or `-n`) option.
+

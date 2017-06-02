@@ -17,6 +17,7 @@ program
   .option('-e, --extension <ext1 ext2 ext3 ...>', 'A list of entension for folder files to be read, .xml is default')
   .option('-o, --output <path>', 'Generate files to specific path, default is console')
   .option('-t, --type <tree/xpaths/both>', 'Type of format output, can be tree/xpaths or both for outputdir, tree/xpaths for console')
+  .option('-n, --nbattvalues <n>', 'Number of attribute values to output (see -a)', 10)
   .parse(process.argv);
 
 // No option provided , show help
@@ -29,7 +30,7 @@ var results;
 
 // Start Cli on File
 if (program.input) {
-  let xml = new FromXml().generate(program.input).then(result=> {
+  let xml = new FromXml().generate(program.input, true, program.nbattvalues).then(result=> {
     results = result;
     var action = actionsToDo();
     for (var key in result) {
