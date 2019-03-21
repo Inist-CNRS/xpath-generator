@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 'use strict';
-const program = require('commander'),
-  version = require('./package.json').version,
-  FromXml = require('./lib/FromXml'),
-  fs = require('fs'),
-  path = require('path'),
-  FromFolder = require('./lib/FromFolder');
+const program = require('commander');
+const version = require('./package.json').version;
+const FromXml = require('./lib/FromXml');
+const fs = require('fs');
+const path = require('path');
+const FromFolder = require('./lib/FromFolder');
 
 // Cli config
 program
@@ -25,24 +25,24 @@ if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
 
-//Make results available globally
+// Make results available globally
 var results;
 
 // Start Cli on File
 if (program.input) {
-  let xml = new FromXml().generate(program.input, true, program.nbattvalues).then(result=> {
+  let xml = new FromXml().generate(program.input, true, program.nbattvalues).then(result => {
     results = result;
     var action = actionsToDo();
     for (var key in result) {
       action(key);
     }
-  }).catch(err=>{
+  }).catch(err => {
     console.error('An error came : ', err);
   });
 }
 // Start Cli on Folder
 if (program.folder) {
-  let xmls = new FromFolder().generateAll(program.folder,program.extension).then(result=> {
+  let xmls = new FromFolder().generateAll(program.folder, program.extension).then(result => {
     results = result;
     var action = actionsToDo();
     for (var key in result) {
@@ -51,25 +51,23 @@ if (program.folder) {
   });
 }
 
-function actionsToDo() {
-
+function actionsToDo () {
   if (!program.output || program.output === 'console') {
     if (program.type === 'xpaths') {
       return function (path) {
         let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-        console.log(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`)
+        console.log(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`);
       };
     }
-    //tree
+    // tree
     return function (path) {
-      let elements = path.split('/'),
-          elementName = elements[elements.length-1];
+      let elements = path.split('/');
+
+      let elementName = elements[elements.length - 1];
       let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-      console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`)
+      console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`);
     };
-  }
-  // Write file, no output
-  else {
+  } else {
     var xpathsFile, treeFile;
     if (!program.output) {
       console.error('error no output specified');
@@ -79,31 +77,30 @@ function actionsToDo() {
       xpathsFile = writeStream('xpaths', program.output, 'csv');
       return function (path) {
         let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-        xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`)
-      }
+        xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
+      };
     }
     if (program.type === 'tree') {
-      treeFile = writeStream('tree', program.output,'txt');
+      treeFile = writeStream('tree', program.output, 'txt');
       return function (path) {
         let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
         treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
-      }
+      };
     }
-    //both
-    xpathsFile = writeStream('xpaths', program.output,'csv');
-    treeFile = writeStream('tree', program.output,'txt');
+    // both
+    xpathsFile = writeStream('xpaths', program.output, 'csv');
+    treeFile = writeStream('tree', program.output, 'txt');
     return function (path) {
       let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-      xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`)
+      xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
       treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
-    }
+    };
   }
-
 }
 
-function writeStream(type, output, extension) {
-  let stream = fs.createWriteStream(path.resolve(output, `output-${type}.${extension}`), {'flags': 'w'});
-  stream.on('error', (err)=> {
+function writeStream (type, output, extension) {
+  let stream = fs.createWriteStream(path.resolve(output, `output-${type}.${extension}`), { 'flags': 'w' });
+  stream.on('error', (err) => {
     throw new Error(err);
   });
   return stream;
