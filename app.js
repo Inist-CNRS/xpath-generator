@@ -26,14 +26,15 @@ if (!process.argv.slice(2).length) {
 }
 
 // Make results available globally
-var results;
+let results;
 
 // Start Cli on File
 if (program.input) {
-  let xml = new FromXml().generate(program.input, true, program.nbattvalues).then(result => {
+  const xml = new FromXml();
+  xml.generate(program.input, true, program.nbattvalues).then(result => {
     results = result;
-    var action = actionsToDo();
-    for (var key in result) {
+    const action = actionsToDo();
+    for (let key in result) {
       action(key);
     }
   }).catch(err => {
@@ -42,10 +43,11 @@ if (program.input) {
 }
 // Start Cli on Folder
 if (program.folder) {
-  let xmls = new FromFolder().generateAll(program.folder, program.extension).then(result => {
+  const xmls = new FromFolder();
+  xmls.generateAll(program.folder, program.extension).then(result => {
     results = result;
-    var action = actionsToDo();
-    for (var key in result) {
+    const action = actionsToDo();
+    for (let key in result) {
       action(key);
     }
   });
@@ -55,20 +57,20 @@ function actionsToDo () {
   if (!program.output || program.output === 'console') {
     if (program.type === 'xpaths') {
       return function (path) {
-        let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
+        const nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
         console.log(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`);
       };
     }
     // tree
     return function (path) {
-      let elements = path.split('/');
+      const elements = path.split('/');
 
-      let elementName = elements[elements.length - 1];
-      let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
+      const elementName = elements[elements.length - 1];
+      const nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
       console.log(`${'│  '.repeat(results[path].level)}├── ${elementName} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}`);
     };
   } else {
-    var xpathsFile, treeFile;
+    let xpathsFile, treeFile;
     if (!program.output) {
       console.error('error no output specified');
       process.exit(0);
@@ -76,14 +78,14 @@ function actionsToDo () {
     if (program.type === 'xpaths') {
       xpathsFile = writeStream('xpaths', program.output, 'csv');
       return function (path) {
-        let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-        xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
+        const nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
+        xpathsFile.write(`${path};${results[path].countElement};${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
       };
     }
     if (program.type === 'tree') {
       treeFile = writeStream('tree', program.output, 'txt');
       return function (path) {
-        let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
+        const nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
         treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
       };
     }
@@ -91,15 +93,15 @@ function actionsToDo () {
     xpathsFile = writeStream('xpaths', program.output, 'csv');
     treeFile = writeStream('tree', program.output, 'txt');
     return function (path) {
-      let nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
-      xpathsFile.write(`${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
+      const nbOfAttr = program.attributes ? Object.keys(results[path].attributes).length : 0;
+      xpathsFile.write(`${path};${results[path].countElement};${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
       treeFile.write(`${'│  '.repeat(results[path].level)}├── ${path} ${results[path].countElement} ${nbOfAttr ? JSON.stringify(results[path].attributes) : ''}\n`);
     };
   }
 }
 
 function writeStream (type, output, extension) {
-  let stream = fs.createWriteStream(path.resolve(output, `output-${type}.${extension}`), { 'flags': 'w' });
+  const stream = fs.createWriteStream(path.resolve(output, `output-${type}.${extension}`), { 'flags': 'w' });
   stream.on('error', (err) => {
     throw new Error(err);
   });
