@@ -7,14 +7,14 @@
     "xpath-generator": "app.js"
   },
   "dependencies": {
-    "bluebird": "^3.5.3",
-    "cheerio": "^1.0.0-rc.2",
-    "commander": "^2.19.0",
+    "bluebird": "^3.5.5",
+    "cheerio": "^1.0.0-rc.3",
+    "commander": "^2.20.0",
     "kuler": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.0.2"
+    "mocha": "^6.1.4"
   },
   "scripts": {
     "test": "mocha"
