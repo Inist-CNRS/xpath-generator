@@ -9,12 +9,12 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "cheerio": "^1.0.0-rc.10",
-    "commander": "^2.20.3",
-    "kuler": "^1.0.1"
+    "commander": "^9.1.0",
+    "kuler": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^4.3.6",
-    "mocha": "^6.2.3"
+    "mocha": "^9.2.2"
   },
   "scripts": {
     "test": "mocha"
